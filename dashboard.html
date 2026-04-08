@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Om.Zone | لوحة التحكم</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* تحسينات إضافية للتصميم اللكشري */
+        .course-card {
+            background: #111;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 15px;
+            transition: 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .course-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+        #chatBox::-webkit-scrollbar {
+            width: 5px;
+        }
+        #chatBox::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+        .msg-client {
+            background: #333;
+            color: white;
+            padding: 12px;
+            border-radius: 15px 15px 0 15px;
+            align-self: flex-end;
+            max-width: 80%;
+            border: 1px solid #444;
+        }
+        .msg-admin {
+            background: var(--gold);
+            color: black;
+            padding: 12px;
+            border-radius: 15px 15px 15px 0;
+            align-self: flex-start;
+            max-width: 80%;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- القائمة الجانبية -->
+    <div class="sidebar">
+        <div style="padding: 30px; text-align: center;">
+            <h1 style="color: var(--gold); margin: 0; font-size: 28px; letter-spacing: 2px;">Om.Zone</h1>
+        </div>
+        
+        <div class="sidebar-item active-item" onclick="showSection('dash')">📊 لوحة التحكم</div>
+        <div class="sidebar-item" onclick="showSection('my-courses')">⭐ الكورسات المشتركة</div>
+        <div class="sidebar-item" onclick="showSection('all-courses')">📚 جميع الكورسات</div>
+        <div class="sidebar-item" onclick="showSection('books')">📖 المكتبة والكتب</div>
+        <div class="sidebar-item" onclick="showSection('chat')">💬 غرفة التواصل</div>
+        
+        <div class="btn-logout" onclick="deleteAccount()">🔴 تسجيل الخروج والحذف</div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div style="margin-right: 260px; padding: 40px;">
+        
+        <!-- 1. لوحة التحكم -->
+        <div id="dash" class="content-section active-section">
+            <h2 id="welcomeMsg" style="margin-bottom: 30px;">أهلاً بك..</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                <div class="card" style="text-align: center; border: 1px solid var(--gold);">
+                    <h3 style="color: #888;">إجمالي ساعات التعلم</h3>
+                    <p id="timerDisplay" class="gold-text" style="font-size: 45px; margin: 10px 0;">00:00:00</p>
+                    <p id="statusUpdate" style="font-size: 12px; color: #555;">العداد متوقف (ابدأ كورس للتشغيل)</p>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <h3 style="color: #888;">المستوى الحالي</h3>
+                    <p id="rankDisplay" class="gold-text" style="font-size: 35px; margin: 10px 0;">مبتدئ</p>
+                    <small id="courseCountDisplay">عدد الكورسات المشتركة: 0</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. الكورسات المشتركة -->
+        <div id="my-courses" class="content-section">
+            <h2 class="gold-text">كورساتي المشتركة</h2>
+            <div id="enrolledList">
+                <div class="course-card">
+                    <div>
+                        <h3>دورة أساسيات Python</h3>
+                        <p style="color: #777;">اضغط "بدأ المذاكرة" لتشغيل عداد الساعات</p>
+                    </div>
+                    <button class="btn-gold" onclick="startLearning('Python Basics')">بدأ المذاكرة 📖</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. جميع الكورسات -->
+        <div id="all-courses" class="content-section">
+            <h2 class="gold-text">متجر الكورسات المتاحة</h2>
+            <div class="course-card">
+                <div>
+                    <h3>دورة Full-Stack Web Development</h3>
+                    <p>تعلم بناء المواقع من الصفر للاحتراف</p>
+                </div>
+                <button class="btn-gold" onclick="showSection('chat')">طلب اشتراك</button>
+            </div>
+        </div>
+
+        <!-- 4. الكتب -->
+        <div id="books" class="content-section">
+            <h2 class="gold-text">المكتبة الرقمية</h2>
+            <div class="card">
+                <p>📚 لا توجد كتب متاحة حالياً، سيتم رفع الكتب قريباً.</p>
+            </div>
+        </div>
+
+        <!-- 5. غرفة التواصل -->
+        <div id="chat" class="content-section">
+            <h2 class="gold-text">الدعم الفني والتواصل</h2>
+            <div class="card" style="max-width: 700px; margin: auto; padding: 0; overflow: hidden; border: 1px solid var(--gold);">
+                <div id="chatBox" style="height: 350px; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; background: #0a0a0a;">
+                    <div class="msg-admin">مرحباً بك في Om.Zone! أرسل استفسارك هنا وسنقوم بالرد عليك في أقرب وقت.</div>
+                </div>
+                <div style="padding: 15px; background: #111; display: flex; gap: 10px; border-top: 1px solid #333;">
+                    <input type="text" id="userMsg" placeholder="اكتب رسالتك هنا..." style="margin: 0; border-radius: 30px; background: #000; border: 1px solid #444;">
+                    <button class="btn-gold" onclick="sendToOwner()" style="border-radius: 50%; width: 50px; height: 50px; padding: 0;">✈</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- إدارة الأقسام ---
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
+            document.getElementById(sectionId).classList.add('active-section');
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active-item'));
+            event.currentTarget.classList.add('active-item');
+        }
+
+        // --- نظام ساعات التعلم (لا يعمل إلا عند الطلب) ---
+        let timerInterval = null;
+        let totalSeconds = parseInt(localStorage.getItem('studySeconds') || 0);
+
+        function displayTime() {
+            let hrs = Math.floor(totalSeconds / 3600);
+            let mins = Math.floor((totalSeconds % 3600) / 60);
+            let secs = totalSeconds % 60;
+            document.getElementById('timerDisplay').innerText = 
+                `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function startLearning(courseName) {
+            if (!timerInterval) {
+                timerInterval = setInterval(() => {
+                    totalSeconds++;
+                    localStorage.setItem('studySeconds', totalSeconds);
+                    displayTime();
+                }, 1000);
+                document.getElementById('statusUpdate').innerText = "🟢 يتم الآن حساب وقت المذاكرة: " + courseName;
+                document.getElementById('statusUpdate').style.color = "#d4af37";
+                alert("تم تشغيل عداد الساعات. بالتوفيق في مذاكرة " + courseName);
+            }
+        }
+        displayTime(); // عرض الوقت المخزن عند الفتح
+
+        // --- نظام الرتب ---
+        let myCoursesCount = 1; // عداد تجريبي
+        function updateRank() {
+            let rank = "مبتدئ";
+            if (myCoursesCount >= 3 && myCoursesCount < 7) rank = "متوسط";
+            else if (myCoursesCount >= 7 && myCoursesCount < 12) rank = "محترف";
+            else if (myCoursesCount >= 12) rank = "عالمي";
+            document.getElementById('rankDisplay').innerText = rank;
+            document.getElementById('courseCountDisplay').innerText = "عدد الكورسات المشتركة: " + myCoursesCount;
+        }
+        updateRank();
+
+        // --- غرفة التواصل (الرسائل) ---
+        function sendToOwner() {
+            const msgInput = document.getElementById('userMsg');
+            const msgText = msgInput.value.trim();
+            if (msgText === "") return;
+
+            // إضافة الرسالة للشاشة
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += `<div class="msg-client">${msgText}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // تصفير الإدخال
+            msgInput.value = "";
+
+            // فتح واتساب (استبدل الرقم برقمك الخاص بالدولية مثال 2010...)
+            const whatsappNumber = "201021422784"; 
+            setTimeout(() => {
+                window.open(`https://wa.me/${whatsappNumber}?text=استفسار من منصة Om.Zone:%0A${msgText}`, '_blank');
+            }, 800);
+        }
+
+        // --- تسجيل الخروج والحذف ---
+        function deleteAccount() {
+            if (confirm("هل أنت متأكد من أنك تريد تسجيل الخروج؟ سيتم حذف حسابك نهائياً من هذا المتصفح.")) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+
+        // الاسم الترحيبي
+        document.getElementById('welcomeMsg').innerText = "أهلاً بك يا " + (localStorage.getItem('userName') || "عضو Om.Zone");
+    </script>
+</body>
+</html>
