@@ -1,1 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Om.Zone | بوابة التسجيل الفاخرة</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* تنسيقات إضافية خاصة بصفحة الهبوط فقط */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+        }
+        .login-box {
+            background: rgba(20, 20, 20, 0.95);
+            padding: 50px 40px;
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+        .login-box h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+            background: linear-gradient(to bottom, #f9dfa5 0%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .login-box p {
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        .input-group {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            color: var(--gold);
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            font-size: 18px;
+            letter-spacing: 1px;
+            transition: 0.5s;
+        }
+    </style>
+</head>
+<body>
 
+    <div class="login-container">
+        <div class="login-box">
+            <h1>Om.Zone</h1>
+            <p>PLATFORM OF THE FUTURE</p>
+
+            <form id="registrationForm">
+                <div style="display: flex; gap: 10px;">
+                    <div class="input-group">
+                        <label>الاسم الأول</label>
+                        <input type="text" id="fName" placeholder="مثال: عمر" required>
+                    </div>
+                    <div class="input-group">
+                        <label>اسم العائلة</label>
+                        <input type="text" id="lName" placeholder="مثال: علي" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="email" placeholder="name@example.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label>رمز الدخول (6 أرقام)</label>
+                    <input type="text" id="pincode" maxlength="6" placeholder="0 0 0 0 0 0" 
+                           pattern="\d{6}" title="يجب إدخال 6 أرقام فقط" required>
+                </div>
+
+                <button type="submit" class="btn-gold btn-submit">إنشاء الحساب </button>
+            </form>
+            
+            <footer style="margin-top: 25px; color: #444; font-size: 11px;">
+                &copy; 2026 Om.Zone - جميع الحقوق محفوظة
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // جمع البيانات
+            const userData = {
+                firstName: document.getElementById('fName').value,
+                lastName: document.getElementById('lName').value,
+                email: document.getElementById('email').value,
+                pincode: document.getElementById('pincode').value,
+                studySeconds: 0, // تصفير العداد للمستخدم الجديد
+                coursesCount: 0  // مستخدم جديد
+            };
+
+            // حفظ البيانات في LocalStorage (قاعدة بيانات المتصفح)
+            localStorage.setItem('userName', userData.firstName + " " + userData.lastName);
+            localStorage.setItem('userEmail', userData.email);
+            localStorage.setItem('userPin', userData.pincode);
+            localStorage.setItem('studySeconds', 0);
+
+            // تأثير بصري بسيط قبل الانتقال
+            const btn = e.target.querySelector('button');
+            btn.innerText = "جاري إعداد المنصة...";
+            btn.style.opacity = "0.7";
+
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1500);
+        });
+
+        // منع إدخال أي شيء غير الأرقام في خانة الرمز
+        document.getElementById('pincode').addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    </script>
+
+</body>
+</html>
