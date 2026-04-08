@@ -1,0 +1,85 @@
+:root {
+    --gold: #d4af37;
+    --dark-gold: #aa8a2e;
+    --black: #0b0b0b;
+    --soft-black: #1a1a1a;
+    --white: #ffffff;
+}
+
+body {
+    background-color: var(--black);
+    color: var(--white);
+    font-family: 'Cairo', sans-serif;
+    margin: 0;
+    direction: rtl;
+    overflow-x: hidden;
+}
+
+/* القائمة الجانبية */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: linear-gradient(180deg, #111 0%, #000 100%);
+    border-left: 1px solid var(--gold);
+    position: fixed;
+    right: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-item {
+    padding: 18px 25px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    color: #bbb;
+}
+
+.sidebar-item:hover {
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--gold);
+    padding-right: 35px;
+}
+
+.active-item {
+    border-right: 4px solid var(--gold);
+    color: var(--gold);
+    background: rgba(212, 175, 55, 0.05);
+}
+
+/* زر الخروج */
+.btn-logout {
+    margin-top: auto;
+    background-color: #721c24;
+    color: #f8d7da;
+    border: none;
+    padding: 20px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+}
+
+.btn-logout:hover { background-color: #ff0000; color: white; }
+
+/* قسم المحتوى */
+.content-section {
+    margin-right: 260px;
+    padding: 40px;
+    display: none; /* مخفي افتراضياً */
+}
+
+.active-section { display: block; }
+
+/* تصميم الكروت */
+.card {
+    background: var(--soft-black);
+    border: 1px solid #333;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.gold-text { color: var(--gold); font-weight: bold; }
